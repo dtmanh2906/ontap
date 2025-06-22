@@ -1,0 +1,51 @@
+﻿@model List<Web_PhongBan_NhanVien.Models.ThongKePhongBanViewModel>
+<!-- Model truyền vào là danh sách các phòng ban sau khi thống kê -->
+
+@{
+    ViewData["Title"] = "Thống kê tổng lương các phòng ban";
+}
+
+<h2>Phòng ban có tổng lương nhân viên ≥ 50 triệu</h2>
+
+<!-- Nếu có ít nhất một phòng ban thỏa điều kiện -->
+@if (Model.Any())
+{
+    @foreach (var item in Model) // Duyệt từng phòng ban trong danh sách
+    {
+        <div> <!-- Thẻ card Bootstrap hiển thị từng phòng ban -->
+            <div>
+                <!-- Hiển thị thông tin phòng ban: tên, vị trí, kinh phí, tổng lương -->
+                <strong>@item.TenPhong</strong> - 
+                Vị trí: @item.ViTri |
+                Kinh phí: @item.KinhPhi.ToString("N0") đ |
+                Tổng chi trả: <strong>@item.TongLuongChiTra.ToString("N0") đ</strong>
+            </div>
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>Lương</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var nv in item.DanhSachNhanVien) // Duyệt danh sách nhân viên của phòng ban
+                        {
+                            <tr>
+                                <td>@nv.HoTen</td> <!-- Hiển thị tên nhân viên -->
+                                <td>@nv.Luong.ToString("N0") đ</td> <!-- Hiển thị lương định dạng tiền -->
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning">
+        Không có phòng ban nào có tổng lương ≥ 50 triệu
+    </div>
+}
